@@ -21,7 +21,7 @@ services:
 
   backend:
     build:
-      context: ./coeus-api
+      context: ../coeus-api
       dockerfile: Dockerfile
       target: development
     container_name: ouranos-backend
@@ -33,8 +33,11 @@ services:
       DEBUG: ${DEBUG:-true}
       LOG_LEVEL: ${LOG_LEVEL:-debug}
       SWISS_EPHEMERIS_PATH: ${SWISS_EPHEMERIS_PATH:-/usr/local/share/swisseph}
+      PYTHONPATH: /app:/workspace/crius-ephemeris-core:/workspace/crius-swiss
     volumes:
-      - ./coeus-api:/app
+      - ../coeus-api:/app
+      - ../crius-ephemeris-core:/workspace/crius-ephemeris-core
+      - ../crius-swiss:/workspace/crius-swiss
       - backend_pycache:/app/__pycache__
       - /app/venv  # Exclude venv from volume mount
       # Mount custom ephemeris files (uncomment and set path to your ephemeris directory)
@@ -42,6 +45,7 @@ services:
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
       interval: 30s
@@ -50,48 +54,38 @@ services:
       start_period: 40s
     networks:
       - ouranos-network
-    entrypoint: ["/bin/sh", "/app/docker-entrypoint.sh"]
 
-  nextjs:
-    build:
-      context: .
-      dockerfile: apps/nextjs/Dockerfile
-      target: development
-    container_name: ouranos-nextjs
-    depends_on:
-      backend:
-        condition: service_healthy
-    environment:
-      BACKEND_URL: http://backend:8000
-      NODE_ENV: ${NODE_ENV:-development}
-    volumes:
-      - .:/app
-      - nextjs_node_modules:/app/node_modules
-      - nextjs_packages_node_modules:/app/packages/*/node_modules
-      - nextjs_aphrodite_node_modules:/app/aphrodite/node_modules
-    ports:
-      - "${NEXTJS_PORT:-3001}:3000"
-    healthcheck:
-      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:3000 || exit 0"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-    networks:
-      - ouranos-network
-    stdin_open: true
-    tty: true
+  # Next.js is run locally via dev.sh script for better development experience
+  # Uncomment below if you prefer to run it in Docker
+  # nextjs:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.nextjs
+  #     target: development
+  #   container_name: ouranos-nextjs
+  #   depends_on:
+  #     backend:
+  #       condition: service_healthy
+  #   environment:
+  #     BACKEND_URL: http://backend:8000
+  #     NODE_ENV: ${NODE_ENV:-development}
+  #   volumes:
+  #     - ../hyperion-server:/app
+  #     - ../aphrodite-core:/workspace/aphrodite-core
+  #     - ../aphrodite-react:/workspace/aphrodite-react
+  #     - ../coeus-api-client:/workspace/coeus-api-client
+  #     - nextjs_node_modules:/app/node_modules
+  #   ports:
+  #     - "${NEXTJS_PORT:-3001}:3000"
+  #   networks:
+  #     - ouranos-network
+  #   stdin_open: true
+  #   tty: true
 
 volumes:
   postgres_data:
     driver: local
   backend_pycache:
-    driver: local
-  nextjs_node_modules:
-    driver: local
-  nextjs_packages_node_modules:
-    driver: local
-  nextjs_aphrodite_node_modules:
     driver: local
 
 networks:

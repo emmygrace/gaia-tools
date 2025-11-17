@@ -100,27 +100,61 @@ FastAPI backend providing the charting API.
 
 ### Installation
 
-From the workspace root (`gaia-tools/`):
+From the workspace root (`gaia-tools/gaia-tools/`):
+
+**Quick Setup (Recommended):**
+
+```bash
+# Run the setup script to install all dependencies
+./setup-dev.sh
+```
+
+**Manual Setup:**
 
 ```bash
 # Install all Node.js dependencies
 pnpm install
 
-# Install backend dependencies
-cd ../coeus-api && pip install -r requirements.txt
-
-# Install Python packages (for development)
-cd ../crius-ephemeris-core && pip install -e .
-cd ../crius-swiss && pip install -e .
+# Install Python packages in editable mode (for development)
+cd ../crius-ephemeris-core && pip install -e . && cd -
+cd ../crius-swiss && pip install -e . && cd -
+cd ../coeus-api && pip install -r requirements.txt && pip install -e . && cd -
 ```
 
 ### Development
+
+**Recommended Workflow - Hybrid Development:**
+
+This workflow runs Docker services (postgres + backend) in containers while running TypeScript packages and the frontend locally for better development experience:
+
+```bash
+# Start all services and packages in development mode
+./dev.sh
+```
+
+This will:
+- Start PostgreSQL and backend API in Docker
+- Start all TypeScript packages (`aphrodite-core`, `aphrodite-react`, `coeus-api-client`) in watch mode
+- Start the Next.js frontend in development mode
+
+**Alternative - Docker Only:**
+
+```bash
+# Start only Docker services (postgres + backend)
+docker compose up
+
+# In separate terminals, start TypeScript packages and frontend:
+cd gaia-tools && pnpm -r --parallel dev
+cd ../hyperion-server && pnpm dev
+```
+
+**Manual Development Commands:**
 
 ```bash
 # Build all packages
 pnpm build
 
-# Run all packages in dev mode
+# Run all packages in dev mode (watch mode)
 pnpm dev
 
 # Run linting
@@ -208,22 +242,54 @@ Shared TypeScript configuration is in `tsconfig.base.json`. Individual packages 
 
 ## Docker Development
 
-The workspace includes Docker Compose configuration for local development:
+The workspace includes Docker Compose configuration for local development. The recommended workflow uses a hybrid approach:
+
+- **Docker services**: PostgreSQL and backend API (coeus-api)
+- **Local development**: TypeScript packages and Next.js frontend (for better hot-reload and debugging)
+
+### Docker Services
 
 ```bash
-# Start all services
+# Start Docker services (postgres + backend)
 docker compose up
 
 # Start specific service
 docker compose up backend
-docker compose up nextjs
 
 # View logs
-docker compose logs -f
+docker compose logs -f backend
 
 # Stop services
 docker compose down
 ```
+
+### Development Workflow
+
+The `dev.sh` script orchestrates the full development environment:
+
+1. **First time setup:**
+   ```bash
+   ./setup-dev.sh
+   ```
+
+2. **Daily development:**
+   ```bash
+   ./dev.sh
+   ```
+
+This starts:
+- PostgreSQL (port 5432)
+- Backend API (http://localhost:8000)
+- All TypeScript packages in watch mode
+- Next.js frontend (http://localhost:3000)
+
+### Package Development
+
+All packages support hot-reload during development:
+
+- **TypeScript packages**: Use `pnpm dev` in each package or `pnpm -r --parallel dev` from workspace root
+- **Python packages**: Installed in editable mode (`pip install -e .`), changes are reflected immediately
+- **Backend API**: Uses uvicorn `--reload` flag for automatic restarts on code changes
 
 See `docker-compose.yml` for service configurations.
 
