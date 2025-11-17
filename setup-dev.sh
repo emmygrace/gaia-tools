@@ -49,9 +49,13 @@ else
 fi
 
 if [ -d "$WORKSPACE_ROOT/coeus-api" ]; then
-    echo "  → Installing coeus-api..."
+    echo "  → Installing coeus-api dependencies..."
     cd "$WORKSPACE_ROOT/coeus-api"
-    $PIP_CMD install -e . || echo "  ⚠️  Warning: Failed to install coeus-api (may need virtualenv)"
+    if [ -f "requirements.txt" ]; then
+        $PIP_CMD install -r requirements.txt || echo "  ⚠️  Warning: Failed to install coeus-api requirements"
+    else
+        echo "  ⚠️  requirements.txt not found in coeus-api"
+    fi
     cd "$SCRIPT_DIR"
 else
     echo "  ⚠️  coeus-api not found at $WORKSPACE_ROOT/coeus-api"
@@ -61,7 +65,14 @@ fi
 if ! command -v pnpm &> /dev/null; then
     echo ""
     echo "⚠️  pnpm is not installed. Installing Node.js dependencies will be skipped."
-    echo "   Install pnpm: npm install -g pnpm"
+    echo ""
+    echo "   To install pnpm, run one of:"
+    echo "     • npm install -g pnpm"
+    echo "     • curl -fsSL https://get.pnpm.io/install.sh | sh -"
+    echo "     • corepack enable && corepack prepare pnpm@latest --activate"
+    echo ""
+    echo "   After installing pnpm, run this script again or manually run:"
+    echo "     cd $SCRIPT_DIR && pnpm install"
 else
     # Install Node.js dependencies
     echo ""
