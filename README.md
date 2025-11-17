@@ -1,0 +1,284 @@
+# Gaia Tools Workspace
+
+This workspace contains the Gaia astrological charting system packages and applications.
+
+## Workspace Structure
+
+The workspace is organized as a monorepo with the following structure:
+
+```
+gaia-tools/
+├── coeus-api-client/          # @gaia-tools/coeus-api-client - TypeScript API client SDK
+├── coeus-api/                  # Backend API (FastAPI/Python)
+├── aphrodite-core/            # @gaia-tools/aphrodite - Core chart renderer
+├── aphrodite-react/           # @gaia-tools/aphrodite-react - React bindings
+├── hyperion-server/           # Next.js frontend application
+├── crius-ephemeris-core/      # crius-ephemeris-core - Python ephemeris types and interfaces
+├── crius-swiss/               # crius-swiss - Swiss Ephemeris adapter (AGPL)
+└── gaia-tools/                # Workspace configuration and scripts
+    ├── package.json           # Root workspace package.json
+    ├── pnpm-workspace.yaml    # pnpm workspace configuration
+    ├── docker-compose.yml     # Docker Compose for local development
+    └── TESTING.md             # Testing guide
+```
+
+## Packages
+
+### Published Packages
+
+#### `@gaia-tools/coeus-api-client`
+
+TypeScript client SDK for the Gaia astrological charting backend API.
+
+- **Repository**: [coeus-api-client](https://github.com/emmygrace/coeus-api-client)
+- **Documentation**: See [coeus-api-client/README.md](../coeus-api-client/README.md)
+- **Published to**: npm
+- **Version**: 0.1.0
+
+### Local Development Packages
+
+#### `@gaia-tools/aphrodite`
+
+Core TypeScript + D3 + SVG library for rendering astrological charts.
+
+- **Location**: `../aphrodite-core/`
+- **Documentation**: See [aphrodite-core/README.md](../aphrodite-core/README.md)
+
+#### `@gaia-tools/aphrodite-react`
+
+React bindings for the Aphrodite chart renderer.
+
+- **Location**: `../aphrodite-react/`
+- **Documentation**: See [aphrodite-react/README.md](../aphrodite-react/README.md)
+
+### Python Packages
+
+#### `crius-ephemeris-core`
+
+Core ephemeris types and interfaces for astrological calculations. Pure abstractions with no external dependencies.
+
+- **Location**: `../crius-ephemeris-core/`
+- **Documentation**: See [crius-ephemeris-core/README.md](../crius-ephemeris-core/README.md)
+- **License**: MIT
+- **Published to**: PyPI (when published)
+- **Version**: 0.1.0
+
+#### `crius-swiss`
+
+Swiss Ephemeris adapter implementation that conforms to the `crius-ephemeris-core` protocol.
+
+- **Location**: `../crius-swiss/`
+- **Documentation**: See [crius-swiss/README.md](../crius-swiss/README.md)
+- **License**: AGPL-3.0 (due to Swiss Ephemeris dependency)
+- **Published to**: PyPI (when published)
+- **Version**: 0.1.0
+- **Note**: Requires Swiss Ephemeris data files (`.se1` files) - see [Swiss Ephemeris licensing](https://www.astro.com/swisseph/swephinfo_e.htm)
+
+## Applications
+
+### hyperion-server
+
+Next.js frontend application for the Gaia astrological charting system.
+
+- **Location**: `../hyperion-server/`
+- **Documentation**: See [hyperion-server/README.md](../hyperion-server/README.md)
+
+### coeus-api
+
+FastAPI backend providing the charting API.
+
+- **Location**: `../coeus-api/`
+- **Documentation**: See [coeus-api/README.md](../coeus-api/README.md)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+ and pnpm
+- Python 3.11+ (for backend and Python packages)
+- Docker and Docker Compose (optional, for containerized development)
+
+### Installation
+
+From the workspace root (`gaia-tools/`):
+
+```bash
+# Install all Node.js dependencies
+pnpm install
+
+# Install backend dependencies
+cd ../coeus-api && pip install -r requirements.txt
+
+# Install Python packages (for development)
+cd ../crius-ephemeris-core && pip install -e .
+cd ../crius-swiss && pip install -e .
+```
+
+### Development
+
+```bash
+# Build all packages
+pnpm build
+
+# Run all packages in dev mode
+pnpm dev
+
+# Run linting
+pnpm lint
+
+# Run tests
+pnpm test
+```
+
+### Using Published vs Local Packages
+
+#### Published Packages
+
+**npm Packages:**
+
+When `@gaia-tools/coeus-api-client` is published to npm, you can use it in your projects:
+
+```bash
+pnpm add @gaia-tools/coeus-api-client axios
+```
+
+**PyPI Packages:**
+
+When the Python packages are published to PyPI, you can install them:
+
+```bash
+# Install crius-ephemeris-core (MIT licensed)
+pip install crius-ephemeris-core
+
+# Install crius-swiss (AGPL licensed, requires Swiss Ephemeris data files)
+pip install crius-swiss
+```
+
+#### Local Development
+
+For local development, packages are linked using `file:` protocol in `package.json`:
+
+```json
+{
+  "dependencies": {
+    "@gaia-tools/coeus-api-client": "file:../coeus-api-client"
+  }
+}
+```
+
+This allows you to:
+- Make changes to packages and see them immediately in consuming applications
+- Test package changes before publishing
+- Develop packages and applications in parallel
+
+## Package Publishing
+
+### Publishing `@gaia-tools/coeus-api-client`
+
+See the [coeus-api-client/PUBLISH_CHECKLIST.md](../coeus-api-client/PUBLISH_CHECKLIST.md) for detailed publishing instructions.
+
+Quick steps:
+
+1. Navigate to the package: `cd ../coeus-api-client`
+2. Update version in `package.json` and `CHANGELOG.md`
+3. Run `pnpm build` to build the package
+4. Run `pnpm pack` to verify package contents
+5. Run `npm publish` (or `pnpm publish`)
+
+The `prepublishOnly` script will automatically run lint, test, and build before publishing.
+
+## Workspace Configuration
+
+### pnpm Workspace
+
+The workspace uses pnpm workspaces defined in `pnpm-workspace.yaml`:
+
+```yaml
+packages:
+  - 'packages/*'
+  - 'apps/*'
+  - 'aphrodite'
+```
+
+Note: The actual package locations may differ from the workspace patterns. Check individual `package.json` files for actual `file:` paths.
+
+### TypeScript Configuration
+
+Shared TypeScript configuration is in `tsconfig.base.json`. Individual packages extend this base configuration.
+
+## Docker Development
+
+The workspace includes Docker Compose configuration for local development:
+
+```bash
+# Start all services
+docker compose up
+
+# Start specific service
+docker compose up backend
+docker compose up nextjs
+
+# View logs
+docker compose logs -f
+
+# Stop services
+docker compose down
+```
+
+See `docker-compose.yml` for service configurations.
+
+## Testing
+
+See [TESTING.md](./TESTING.md) for comprehensive testing documentation.
+
+Quick test commands:
+
+```bash
+# Run all tests
+pnpm test
+
+# Run unit tests only
+pnpm test:unit
+
+# Run backend tests
+pnpm test:backend
+
+# Run integration tests
+pnpm test:integration
+```
+
+## Scripts
+
+Available workspace scripts (run from `gaia-tools/` directory):
+
+- `pnpm build` - Build all packages
+- `pnpm dev` - Run all packages in development mode
+- `pnpm lint` - Lint all packages
+- `pnpm test` - Run all tests
+- `pnpm test:unit` - Run unit tests for packages only
+- `pnpm test:backend` - Run backend tests
+- `pnpm test:integration` - Run integration tests
+- `pnpm test:coverage` - Run tests with coverage
+
+## Related Documentation
+
+### Workspace Documentation
+- [TESTING.md](./TESTING.md) - Testing guide
+
+### TypeScript/JavaScript Packages
+- [coeus-api-client/README.md](../coeus-api-client/README.md) - API client documentation
+- [aphrodite-core/README.md](../aphrodite-core/README.md) - Core chart renderer documentation
+- [aphrodite-react/README.md](../aphrodite-react/README.md) - React bindings documentation
+
+### Applications
+- [hyperion-server/README.md](../hyperion-server/README.md) - Next.js app documentation
+- [coeus-api/README.md](../coeus-api/README.md) - Backend API documentation
+
+### Python Packages
+- [crius-ephemeris-core/README.md](../crius-ephemeris-core/README.md) - Ephemeris core types and interfaces
+- [crius-swiss/README.md](../crius-swiss/README.md) - Swiss Ephemeris adapter documentation
+
+## License
+
+MIT
+

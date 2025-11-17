@@ -1,0 +1,19 @@
+version: '3.8'
+
+# Production override for docker-compose.yml
+# Use with: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+
+services:
+  backend:
+    build:
+      target: production
+    environment:
+      DEBUG: "false"
+      LOG_LEVEL: info
+      SWISS_EPHEMERIS_PATH: ${SWISS_EPHEMERIS_PATH:-/usr/local/share/swisseph}
+    volumes:
+      # No volume mounts in production - code is baked into image
+      - backend_pycache:/app/__pycache__
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+
+
