@@ -114,7 +114,7 @@ pnpm test           # Test all packages
 docker compose up              # Start services
 docker compose up -d           # Start in background
 docker compose down            # Stop services
-docker compose logs -f backend # View backend logs
+docker compose logs -f coeus-api-backend # View backend logs
 docker compose ps              # Check service status
 ```
 
@@ -122,8 +122,8 @@ docker compose ps              # Check service status
 
 ### Backend not starting
 
-1. Check Docker logs: `docker compose logs backend`
-2. Verify Python packages are installed: `docker compose exec backend pip list | grep crius`
+1. Check Docker logs: `docker compose logs coeus-api-backend`
+2. Verify Python packages are installed: `docker compose exec coeus-api-backend pip list | grep crius`
 3. Check database connection: `docker compose ps postgres`
 
 ### TypeScript packages not rebuilding
@@ -141,7 +141,7 @@ docker compose ps              # Check service status
 ### Python package changes not reflected
 
 1. Verify editable install: `pip show crius-ephemeris-core` (should show location)
-2. Restart backend: `docker compose restart backend`
+2. Restart backend: `docker compose restart coeus-api-backend`
 3. Check PYTHONPATH in docker-compose.yml
 
 ## Best Practices

@@ -163,7 +163,7 @@ Tests that require a running backend and test complete workflows.
 - Error scenarios
 
 **Requirements:**
-- Backend must be running (`docker compose up backend`)
+- Backend must be running (`docker compose up coeus-api-backend`)
 - Tests are marked with `@pytest.mark.integration`
 - Can be skipped if backend is not available
 
@@ -249,7 +249,7 @@ Integration tests are automatically skipped if the backend is not running. To ru
 
 ```bash
 # Start backend
-cd ../gaia-tools && docker compose up backend
+cd ../gaia-tools && docker compose up coeus-api-backend
 
 # Run integration tests
 cd ../coeus-api && pytest tests/integration -m integration

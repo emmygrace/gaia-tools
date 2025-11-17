@@ -140,7 +140,7 @@ This will:
 **Alternative - Docker Only:**
 
 ```bash
-# Start only Docker services (postgres + backend)
+# Start only Docker services (postgres + coeus-api-backend)
 docker compose up
 
 # In separate terminals, start TypeScript packages and frontend:
@@ -250,14 +250,14 @@ The workspace includes Docker Compose configuration for local development. The r
 ### Docker Services
 
 ```bash
-# Start Docker services (postgres + backend)
+# Start Docker services (postgres + coeus-api-backend)
 docker compose up
 
 # Start specific service
-docker compose up backend
+docker compose up coeus-api-backend
 
 # View logs
-docker compose logs -f backend
+docker compose logs -f coeus-api-backend
 
 # Stop services
 docker compose down

@@ -23,7 +23,7 @@ echo ""
 
 # Check backend
 echo "Backend (FastAPI):"
-if docker compose ps backend | grep -q "Up"; then
+if docker compose ps coeus-api-backend | grep -q "Up"; then
     if curl -s http://127.0.0.1:8000/ > /dev/null 2>&1; then
         echo "  ✓ Running on http://127.0.0.1:8000"
         echo "  ✓ API Docs: http://127.0.0.1:8000/docs"
@@ -36,9 +36,9 @@ fi
 
 echo ""
 
-# Check nextjs
+# Check frontend
 echo "Next.js App:"
-if docker compose ps nextjs | grep -q "Up"; then
+if docker compose ps hyperion-server-frontend | grep -q "Up"; then
     if curl -s http://127.0.0.1:3001/ > /dev/null 2>&1; then
         echo "  ✓ Running on http://127.0.0.1:3001"
     else

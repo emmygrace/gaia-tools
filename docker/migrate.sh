@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 
 echo "Running database migrations..."
 
-docker compose exec backend alembic upgrade head
+docker compose exec coeus-api-backend alembic upgrade head
 
 echo "Migrations completed."
 

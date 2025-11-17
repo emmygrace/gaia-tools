@@ -11,11 +11,11 @@ set -e
 cd "$(dirname "$0")/.."
 
 if [ "$1" = "--volumes" ] || [ "$1" = "-v" ]; then
-    echo "Stopping Ouranos services and removing volumes..."
+    echo "Stopping Gaia Tools services and removing volumes..."
     docker compose down -v
     echo "Services stopped and volumes removed."
 else
-    echo "Stopping Ouranos services..."
+    echo "Stopping Gaia Tools services..."
     docker compose down
     echo "Services stopped."
 fi

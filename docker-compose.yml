@@ -1,11 +1,11 @@
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: ouranos-postgres
+    container_name: gaia-tools-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-ouranos}
+      POSTGRES_DB: ${POSTGRES_DB:-gaia-tools}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -17,19 +17,20 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ouranos-network
+      - gaia-tools-network
 
-  backend:
+  coeus-api-backend:
+    image: gaia-tools/coeus-api-backend:latest
     build:
       context: ../coeus-api
       dockerfile: Dockerfile
       target: development
-    container_name: ouranos-backend
+    container_name: gaia-tools-coeus-api-backend
     depends_on:
       postgres:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-ouranos}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-gaia-tools}
       DEBUG: ${DEBUG:-true}
       LOG_LEVEL: ${LOG_LEVEL:-debug}
       SWISS_EPHEMERIS_PATH: ${SWISS_EPHEMERIS_PATH:-/usr/local/share/swisseph}
@@ -53,21 +54,22 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - ouranos-network
+      - gaia-tools-network
 
   # Next.js is run locally via dev.sh script for better development experience
   # Uncomment below if you prefer to run it in Docker
-  # nextjs:
+  # hyperion-server-frontend:
+  #   image: gaia-tools/hyperion-server-frontend:latest
   #   build:
   #     context: .
   #     dockerfile: Dockerfile.nextjs
   #     target: development
-  #   container_name: ouranos-nextjs
+  #   container_name: gaia-tools-hyperion-server-frontend
   #   depends_on:
-  #     backend:
+  #     coeus-api-backend:
   #       condition: service_healthy
   #   environment:
-  #     BACKEND_URL: http://backend:8000
+  #     BACKEND_URL: http://coeus-api-backend:8000
   #     NODE_ENV: ${NODE_ENV:-development}
   #   volumes:
   #     - ../hyperion-server:/app
@@ -78,7 +80,7 @@ services:
   #   ports:
   #     - "${NEXTJS_PORT:-3001}:3000"
   #   networks:
-  #     - ouranos-network
+  #     - gaia-tools-network
   #   stdin_open: true
   #   tty: true
 
@@ -89,6 +91,6 @@ volumes:
     driver: local
 
 networks:
-  ouranos-network:
+  gaia-tools-network:
     driver: bridge
 

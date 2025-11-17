@@ -6,5 +6,5 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "Opening backend shell..."
-docker compose exec backend /bin/sh
+docker compose exec coeus-api-backend /bin/sh
 

@@ -108,7 +108,7 @@ custom-backend/
 Create a `Dockerfile` in your `custom-backend/` directory:
 
 ```dockerfile
-FROM coeus-api:latest
+FROM gaia-tools/coeus-api-backend:latest
 
 # Copy your licensed ephemeris files
 COPY swisseph/ /usr/local/share/swisseph/
@@ -162,11 +162,11 @@ If using the first approach (extending the base image):
 ```bash
 # First, build the base backend image
 cd /path/to/gaia-tools/coeus-api
-docker build -t coeus-api:latest .
+docker build -t gaia-tools/coeus-api-backend:latest .
 
 # Then build your custom image
 cd /path/to/custom-backend
-docker build -t coeus-api-custom:latest .
+docker build -t gaia-tools/coeus-api-backend-custom:latest .
 ```
 
 If using the second approach (standalone Dockerfile):
@@ -178,7 +178,7 @@ cp -r /path/to/gaia-tools/coeus-api/requirements.txt /path/to/custom-backend/
 
 # Build the image
 cd /path/to/custom-backend
-docker build -t coeus-api-custom:latest .
+docker build -t gaia-tools/coeus-api-backend-custom:latest .
 ```
 
 ### Step 4: Update docker-compose.yml
@@ -186,8 +186,8 @@ docker build -t coeus-api-custom:latest .
 Update `docker-compose.yml` to use your custom image:
 
 ```yaml
-backend:
-  image: coeus-api-custom:latest
+coeus-api-backend:
+  image: gaia-tools/coeus-api-backend-custom:latest
   build:  # Remove this if using pre-built image
     context: ./custom-backend
     dockerfile: Dockerfile
@@ -208,7 +208,7 @@ To verify that your ephemeris files are being used correctly:
 
 1. Check the backend logs:
    ```bash
-   docker compose logs backend
+   docker compose logs coeus-api-backend
    ```
 
 2. Test an API endpoint that requires ephemeris calculations:
@@ -229,7 +229,7 @@ If you see errors like "ephemeris file not found":
 - Verify the `SWISS_EPHEMERIS_PATH` environment variable is set correctly
 - Check that the files are actually present in the container:
   ```bash
-  docker compose exec backend ls -la $SWISS_EPHEMERIS_PATH
+  docker compose exec coeus-api-backend ls -la $SWISS_EPHEMERIS_PATH
   ```
 - Ensure file permissions allow reading
 

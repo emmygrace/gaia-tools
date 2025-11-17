@@ -35,7 +35,7 @@ echo "Removing all containers..."
 docker compose rm -f 2>/dev/null || true
 
 echo "Removing all volumes..."
-docker volume ls -q | grep ouranos | xargs -r docker volume rm || true
+docker volume ls -q | grep gaia-tools | xargs -r docker volume rm || true
 
 echo "Pruning unused Docker resources..."
 docker system prune -f
@@ -57,8 +57,8 @@ echo "Services are starting. Check status with:"
 echo "  ./docker/logs.sh"
 echo ""
 echo "Or view logs for a specific service:"
-echo "  ./docker/logs.sh backend"
-echo "  ./docker/logs.sh nextjs"
+echo "  ./docker/logs.sh coeus-api-backend"
+echo "  ./docker/logs.sh hyperion-server-frontend"
 echo "  ./docker/logs.sh postgres"
 echo ""
 

@@ -12,7 +12,7 @@ fi
 
 POSTGRES_USER=${POSTGRES_USER:-postgres}
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-POSTGRES_DB=${POSTGRES_DB:-ouranos}
+POSTGRES_DB=${POSTGRES_DB:-gaia-tools}
 
 echo "Connecting to PostgreSQL database..."
 docker compose exec postgres psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"

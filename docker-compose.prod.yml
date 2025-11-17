@@ -4,7 +4,8 @@ version: '3.8'
 # Use with: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 services:
-  backend:
+  coeus-api-backend:
+    image: gaia-tools/coeus-api-backend:latest
     build:
       target: production
     environment:

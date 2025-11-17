@@ -41,7 +41,7 @@ trap cleanup INT TERM
 
 # Start Docker services
 if command -v docker &> /dev/null && (command -v docker-compose &> /dev/null || docker compose version &> /dev/null); then
-    echo "🐳 Starting Docker services (postgres + backend)..."
+    echo "🐳 Starting Docker services (postgres + coeus-api-backend)..."
     cd "$SCRIPT_DIR"
     docker compose up -d
     
@@ -50,7 +50,7 @@ if command -v docker &> /dev/null && (command -v docker-compose &> /dev/null || 
     MAX_WAIT=60
     WAIT_COUNT=0
     while [ $WAIT_COUNT -lt $MAX_WAIT ]; do
-        if docker compose ps backend | grep -q "healthy"; then
+        if docker compose ps coeus-api-backend | grep -q "healthy"; then
             echo "  ✅ Backend is ready!"
             break
         fi

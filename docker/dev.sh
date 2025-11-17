@@ -9,7 +9,7 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-echo "Starting Ouranos development environment..."
+echo "Starting Gaia Tools development environment..."
 
 # Check if .env exists, create from example if not
 if [ ! -f .env ]; then

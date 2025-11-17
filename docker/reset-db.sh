@@ -19,7 +19,7 @@ docker compose down
 
 echo "Removing postgres volume..."
 # Remove the postgres volume (Docker Compose prefixes with project name)
-docker volume rm ouranos_postgres_data 2>/dev/null || \
+docker volume rm gaia-tools_postgres_data 2>/dev/null || \
 docker volume ls -q | grep postgres_data | xargs -r docker volume rm || \
 echo "Volume already removed or doesn't exist"
 
@@ -30,10 +30,10 @@ echo "Waiting for PostgreSQL to be ready..."
 sleep 5
 
 echo "Starting backend (migrations will run automatically)..."
-docker compose up -d backend
+docker compose up -d coeus-api-backend
 
-echo "Starting nextjs..."
-docker compose up -d nextjs
+echo "Starting frontend..."
+docker compose up -d hyperion-server-frontend
 
 echo ""
 echo "Database reset complete!"

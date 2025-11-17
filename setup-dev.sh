@@ -101,6 +101,6 @@ echo "✅ Development environment setup complete!"
 echo ""
 echo "Next steps:"
 echo "  1. Run './dev.sh' to start all services and packages in development mode"
-echo "  2. Or run 'docker compose up' to start only Docker services (postgres + backend)"
+echo "  2. Or run 'docker compose up' to start only Docker services (postgres + coeus-api-backend)"
 echo ""
 
