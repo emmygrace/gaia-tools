@@ -36,20 +36,6 @@ fi
 
 echo ""
 
-# Check frontend
-echo "Next.js App:"
-if docker compose ps hyperion-server-frontend | grep -q "Up"; then
-    if curl -s http://127.0.0.1:3001/ > /dev/null 2>&1; then
-        echo "  ✓ Running on http://127.0.0.1:3001"
-    else
-        echo "  ⚠ Container running but not responding"
-    fi
-else
-    echo "  ✗ Not running"
-fi
-
-echo ""
-
 # Check postgres
 echo "PostgreSQL:"
 if docker compose ps postgres | grep -q "Up"; then
@@ -64,7 +50,6 @@ fi
 
 echo ""
 echo "=== Access URLs ==="
-echo "Next.js App: http://localhost:3001"
 echo "Backend API: http://localhost:8000"
 echo "API Docs: http://localhost:8000/docs"
 echo ""

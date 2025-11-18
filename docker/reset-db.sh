@@ -32,9 +32,6 @@ sleep 5
 echo "Starting backend (migrations will run automatically)..."
 docker compose up -d coeus-api-backend
 
-echo "Starting frontend..."
-docker compose up -d hyperion-server-frontend
-
 echo ""
 echo "Database reset complete!"
 echo "Services are starting. Check status with: ./docker/logs.sh"

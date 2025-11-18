@@ -58,7 +58,6 @@ echo "  ./docker/logs.sh"
 echo ""
 echo "Or view logs for a specific service:"
 echo "  ./docker/logs.sh coeus-api-backend"
-echo "  ./docker/logs.sh hyperion-server-frontend"
 echo "  ./docker/logs.sh postgres"
 echo ""
 

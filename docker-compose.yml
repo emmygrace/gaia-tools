@@ -34,34 +34,6 @@ services:
     networks:
       - gaia-tools-network
 
-  # Next.js is run locally via dev.sh script for better development experience
-  # Uncomment below if you prefer to run it in Docker
-  # hyperion-server-frontend:
-  #   image: gaia-tools/hyperion-server-frontend:latest
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.nextjs
-  #     target: development
-  #   container_name: gaia-tools-hyperion-server-frontend
-  #   depends_on:
-  #     coeus-api-backend:
-  #       condition: service_healthy
-  #   environment:
-  #     BACKEND_URL: http://coeus-api-backend:8000
-  #     NODE_ENV: ${NODE_ENV:-development}
-  #   volumes:
-  #     - ../hyperion-server:/app
-  #     - ../aphrodite-core:/workspace/aphrodite-core
-  #     - ../aphrodite-react:/workspace/aphrodite-react
-  #     - ../coeus-api-client:/workspace/coeus-api-client
-  #     - nextjs_node_modules:/app/node_modules
-  #   ports:
-  #     - "${NEXTJS_PORT:-3001}:3000"
-  #   networks:
-  #     - gaia-tools-network
-  #   stdin_open: true
-  #   tty: true
-
 volumes:
   backend_pycache:
     driver: local

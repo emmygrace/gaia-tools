@@ -6,7 +6,7 @@ This guide explains the recommended workflow for developing all Gaia Tools packa
 
 The development workflow uses a **hybrid approach**:
 - **Docker**: PostgreSQL and backend API (for service isolation)
-- **Local**: TypeScript packages and Next.js frontend (for better hot-reload and debugging)
+- **Local**: TypeScript packages (for better hot-reload and debugging)
 
 ## Quick Start
 
@@ -33,7 +33,6 @@ This starts:
 - PostgreSQL (port 5432)
 - Backend API (http://localhost:8000)
 - All TypeScript packages in watch mode
-- Next.js frontend (http://localhost:3000)
 
 Press `Ctrl+C` to stop all services.
 
@@ -50,8 +49,7 @@ gaia-tools/
 ├── coeus-api-client/        # TypeScript package (no deps)
 ├── coeus-api/               # Python FastAPI backend (depends on crius-swiss)
 ├── crius-ephemeris-core/    # Python package (no deps)
-├── crius-swiss/             # Python package (depends on crius-ephemeris-core)
-└── hyperion-server/         # Next.js frontend (depends on all TS packages)
+└── crius-swiss/             # Python package (depends on crius-ephemeris-core)
 ```
 
 ## How It Works
@@ -156,14 +154,14 @@ docker compose ps              # Check service status
 
 ### Docker-Only Development
 
-If you prefer everything in Docker, uncomment the `nextjs` service in `docker-compose.yml` and update the volumes to match your structure.
+If you prefer everything in Docker, you can add additional services to `docker-compose.yml` as needed.
 
 ### Local-Only Development
 
 For local-only development (no Docker):
 1. Install and run PostgreSQL locally
 2. Run backend with: `cd ../coeus-api && uvicorn app.main:app --reload`
-3. Run packages and frontend as usual
+3. Run packages as usual
 
 ## Next Steps
 

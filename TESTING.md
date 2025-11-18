@@ -40,9 +40,6 @@ cd ../aphrodite-react && pnpm test
 # Test coeus-api-client package
 cd ../coeus-api-client && pnpm test
 
-# Test Next.js app (hyperion-server)
-cd ../hyperion-server && pnpm test
-
 # Test backend (coeus-api)
 cd ../coeus-api && pytest
 ```
@@ -86,23 +83,6 @@ pnpm test:coverage
 ```bash
 cd ../coeus-api-client
 pnpm test
-```
-
-### Next.js App
-
-- **Test Runner**: Jest
-- **Test Files**: `**/__tests__/**/*.test.tsx`
-- **Configuration**: `jest.config.js`
-
-**Test Coverage:**
-- ChartViewer component
-- Component interactions
-
-**Run Tests:**
-```bash
-cd ../hyperion-server
-pnpm test
-pnpm test:coverage
 ```
 
 ### Backend

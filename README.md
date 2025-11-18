@@ -12,7 +12,6 @@ gaia-tools/
 ├── coeus-api/                  # Backend API (FastAPI/Python)
 ├── aphrodite-core/            # @gaia-tools/aphrodite - Core chart renderer
 ├── aphrodite-react/           # @gaia-tools/aphrodite-react - React bindings
-├── hyperion-server/           # Next.js frontend application
 ├── crius-ephemeris-core/      # crius-ephemeris-core - Python ephemeris types and interfaces
 ├── crius-swiss/               # crius-swiss - Swiss Ephemeris adapter (AGPL)
 └── gaia-tools/                # Workspace configuration and scripts
@@ -76,13 +75,6 @@ Swiss Ephemeris adapter implementation that conforms to the `crius-ephemeris-cor
 
 ## Applications
 
-### hyperion-server
-
-Next.js frontend application for the Gaia astrological charting system.
-
-- **Location**: `../hyperion-server/`
-- **Documentation**: See [hyperion-server/README.md](../hyperion-server/README.md)
-
 ### coeus-api
 
 FastAPI backend providing the charting API.
@@ -135,7 +127,6 @@ This workflow runs Docker services (postgres + backend) in containers while runn
 This will:
 - Start PostgreSQL and backend API in Docker
 - Start all TypeScript packages (`aphrodite-core`, `aphrodite-react`, `coeus-api-client`) in watch mode
-- Start the Next.js frontend in development mode
 
 **Alternative - Docker Only:**
 
@@ -143,9 +134,8 @@ This will:
 # Start only Docker services (postgres + coeus-api-backend)
 docker compose up
 
-# In separate terminals, start TypeScript packages and frontend:
+# In separate terminals, start TypeScript packages:
 cd gaia-tools && pnpm -r --parallel dev
-cd ../hyperion-server && pnpm dev
 ```
 
 **Manual Development Commands:**
@@ -245,7 +235,7 @@ Shared TypeScript configuration is in `tsconfig.base.json`. Individual packages 
 The workspace includes Docker Compose configuration for local development. The recommended workflow uses a hybrid approach:
 
 - **Docker services**: PostgreSQL and backend API (coeus-api)
-- **Local development**: TypeScript packages and Next.js frontend (for better hot-reload and debugging)
+- **Local development**: TypeScript packages (for better hot-reload and debugging)
 
 ### Docker Services
 
@@ -281,7 +271,6 @@ This starts:
 - PostgreSQL (port 5432)
 - Backend API (http://localhost:8000)
 - All TypeScript packages in watch mode
-- Next.js frontend (http://localhost:3000)
 
 ### Package Development
 
@@ -337,7 +326,6 @@ Available workspace scripts (run from `gaia-tools/` directory):
 - [aphrodite-react/README.md](../aphrodite-react/README.md) - React bindings documentation
 
 ### Applications
-- [hyperion-server/README.md](../hyperion-server/README.md) - Next.js app documentation
 - [coeus-api/README.md](../coeus-api/README.md) - Backend API documentation
 
 ### Python Packages

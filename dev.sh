@@ -20,11 +20,6 @@ cleanup() {
         kill $PNPM_PID 2>/dev/null || true
     fi
     
-    if [ ! -z "$NEXTJS_PID" ]; then
-        echo "  → Stopping Next.js..."
-        kill $NEXTJS_PID 2>/dev/null || true
-    fi
-    
     # Stop Docker services
     if command -v docker &> /dev/null && (command -v docker-compose &> /dev/null || docker compose version &> /dev/null); then
         echo "  → Stopping Docker services..."
@@ -80,41 +75,12 @@ else
     echo "⚠️  pnpm not available, skipping TypeScript packages"
 fi
 
-# Start Next.js frontend
-if [ -d "$WORKSPACE_ROOT/hyperion-server" ] && command -v pnpm &> /dev/null; then
-    echo ""
-    echo "⚛️  Starting Next.js frontend..."
-    cd "$WORKSPACE_ROOT/hyperion-server"
-    
-    # Check if node_modules exists, if not install dependencies
-    if [ ! -d "node_modules" ]; then
-        echo "  → Installing dependencies..."
-        pnpm install
-    fi
-    
-    pnpm dev > /tmp/gaia-nextjs.log 2>&1 &
-    NEXTJS_PID=$!
-    echo "  → Next.js started (PID: $NEXTJS_PID)"
-    echo "  → Logs: tail -f /tmp/gaia-nextjs.log"
-    echo "  → Frontend: http://localhost:3000"
-else
-    if [ ! -d "$WORKSPACE_ROOT/hyperion-server" ]; then
-        echo "⚠️  hyperion-server not found at $WORKSPACE_ROOT/hyperion-server"
-    fi
-    if ! command -v pnpm &> /dev/null; then
-        echo "⚠️  pnpm not available, skipping Next.js"
-    fi
-fi
-
 echo ""
 echo "✅ Development environment is running!"
 echo ""
 echo "Services:"
 echo "  • PostgreSQL: localhost:5432"
 echo "  • Backend API: http://localhost:8000"
-if [ ! -z "$NEXTJS_PID" ]; then
-    echo "  • Frontend: http://localhost:3000"
-fi
 echo ""
 echo "Press Ctrl+C to stop all services"
 echo ""
