@@ -10,7 +10,7 @@ The workspace is organized as a monorepo with the following structure:
 gaia-tools/
 ├── coeus-api-client/          # @gaia-tools/coeus-api-client - TypeScript API client SDK
 ├── coeus-api/                  # Backend API (FastAPI/Python)
-├── aphrodite-core/            # @gaia-tools/aphrodite - Core chart renderer
+├── aphrodite-d3/               # @gaia-tools/aphrodite-d3 - D3-based chart renderer
 ├── crius-ephemeris-core/      # crius-ephemeris-core - Python ephemeris types and interfaces
 ├── crius-swiss/               # crius-swiss - Swiss Ephemeris adapter (AGPL)
 └── gaia-tools/                # Workspace configuration and scripts
@@ -35,12 +35,12 @@ TypeScript client SDK for the Gaia astrological charting backend API.
 
 ### Local Development Packages
 
-#### `@gaia-tools/aphrodite`
+#### `@gaia-tools/aphrodite-d3`
 
-Core TypeScript + D3 + SVG library for rendering astrological charts.
+D3-based TypeScript + SVG library for rendering astrological charts.
 
-- **Location**: `../aphrodite-core/`
-- **Documentation**: See [aphrodite-core/README.md](../aphrodite-core/README.md)
+- **Location**: `../aphrodite-d3/`
+- **Documentation**: See [aphrodite-d3/README.md](../aphrodite-d3/README.md)
 
 ### Python Packages
 
@@ -118,7 +118,7 @@ This workflow runs Docker services (postgres + backend) in containers while runn
 
 This will:
 - Start PostgreSQL and backend API in Docker
-- Start all TypeScript packages (`aphrodite-core`, `coeus-api-client`) in watch mode
+- Start all TypeScript packages (`aphrodite-d3`, `coeus-api-client`) in watch mode
 
 **Alternative - Docker Only:**
 
@@ -314,7 +314,7 @@ Available workspace scripts (run from `gaia-tools/` directory):
 
 ### TypeScript/JavaScript Packages
 - [coeus-api-client/README.md](../coeus-api-client/README.md) - API client documentation
-- [aphrodite-core/README.md](../aphrodite-core/README.md) - Core chart renderer documentation
+- [aphrodite-d3/README.md](../aphrodite-d3/README.md) - D3-based chart renderer documentation
 
 ### Applications
 - [coeus-api/README.md](../coeus-api/README.md) - Backend API documentation

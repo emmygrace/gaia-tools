@@ -44,7 +44,7 @@ gaia-tools/
 │   ├── setup-dev.sh        # Initial setup script
 │   ├── dev.sh              # Development runner script
 │   └── docker-compose.yml  # Docker services config
-├── aphrodite-core/          # TypeScript package (no deps)
+├── aphrodite-d3/            # TypeScript package (no deps)
 ├── coeus-api-client/        # TypeScript package (no deps)
 ├── coeus-api/               # Python FastAPI backend (depends on crius-swiss)
 ├── crius-ephemeris-core/    # Python package (no deps)
@@ -81,7 +81,7 @@ The backend runs in Docker with:
 
 ```bash
 # TypeScript packages
-cd ../aphrodite-core && pnpm dev
+cd ../aphrodite-d3 && pnpm dev
 cd ../coeus-api-client && pnpm dev
 
 # Python packages (changes are immediate with editable install)

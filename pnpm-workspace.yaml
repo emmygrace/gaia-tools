@@ -1,5 +1,5 @@
 packages:
   - 'packages/*'
   - 'apps/*'
-  - 'aphrodite'
+  - 'aphrodite-d3'
 
