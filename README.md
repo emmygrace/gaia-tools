@@ -11,7 +11,6 @@ gaia-tools/
 ├── coeus-api-client/          # @gaia-tools/coeus-api-client - TypeScript API client SDK
 ├── coeus-api/                  # Backend API (FastAPI/Python)
 ├── aphrodite-core/            # @gaia-tools/aphrodite - Core chart renderer
-├── aphrodite-react/           # @gaia-tools/aphrodite-react - React bindings
 ├── crius-ephemeris-core/      # crius-ephemeris-core - Python ephemeris types and interfaces
 ├── crius-swiss/               # crius-swiss - Swiss Ephemeris adapter (AGPL)
 └── gaia-tools/                # Workspace configuration and scripts
@@ -42,13 +41,6 @@ Core TypeScript + D3 + SVG library for rendering astrological charts.
 
 - **Location**: `../aphrodite-core/`
 - **Documentation**: See [aphrodite-core/README.md](../aphrodite-core/README.md)
-
-#### `@gaia-tools/aphrodite-react`
-
-React bindings for the Aphrodite chart renderer.
-
-- **Location**: `../aphrodite-react/`
-- **Documentation**: See [aphrodite-react/README.md](../aphrodite-react/README.md)
 
 ### Python Packages
 
@@ -126,7 +118,7 @@ This workflow runs Docker services (postgres + backend) in containers while runn
 
 This will:
 - Start PostgreSQL and backend API in Docker
-- Start all TypeScript packages (`aphrodite-core`, `aphrodite-react`, `coeus-api-client`) in watch mode
+- Start all TypeScript packages (`aphrodite-core`, `coeus-api-client`) in watch mode
 
 **Alternative - Docker Only:**
 
@@ -323,7 +315,6 @@ Available workspace scripts (run from `gaia-tools/` directory):
 ### TypeScript/JavaScript Packages
 - [coeus-api-client/README.md](../coeus-api-client/README.md) - API client documentation
 - [aphrodite-core/README.md](../aphrodite-core/README.md) - Core chart renderer documentation
-- [aphrodite-react/README.md](../aphrodite-react/README.md) - React bindings documentation
 
 ### Applications
 - [coeus-api/README.md](../coeus-api/README.md) - Backend API documentation

@@ -34,9 +34,6 @@ pnpm test:coverage
 ### Package-Specific Tests
 
 ```bash
-# Test aphrodite-react package
-cd ../aphrodite-react && pnpm test
-
 # Test coeus-api-client package
 cd ../coeus-api-client && pnpm test
 
@@ -47,25 +44,6 @@ cd ../coeus-api && pytest
 ## Test Structure
 
 ### Packages
-
-#### `@gaia-tools/aphrodite-react`
-
-- **Test Runner**: Vitest
-- **Test Files**: `src/**/__tests__/**/*.test.tsx`
-- **Fixtures**: `src/test/fixtures.ts`
-- **Utilities**: `src/test/utils.tsx`
-
-**Test Coverage:**
-- ChartWheel component rendering
-- Utility functions (buildIndexes, helpers)
-- Component interactions and callbacks
-
-**Run Tests:**
-```bash
-cd ../aphrodite-react
-pnpm test
-pnpm test:coverage
-```
 
 #### `@gaia-tools/coeus-api-client`
 
@@ -149,15 +127,6 @@ Tests that require a running backend and test complete workflows.
 
 ## Test Fixtures
 
-### Package Fixtures
-
-Located in `aphrodite-react/src/test/fixtures.ts`:
-
-- `createMockRenderResponse()` - Creates mock RenderResponse data
-- `createMinimalRenderResponse()` - Creates minimal render data
-- `createRenderResponseWithAspects()` - Creates render data with aspects
-- `createMockIndexes()` - Creates mock IndexesDTO
-
 ### Backend Fixtures
 
 Located in `coeus-api/tests/`:
@@ -185,10 +154,6 @@ Coverage reports are generated for:
 
 View coverage:
 ```bash
-# Packages
-cd ../aphrodite-react && pnpm test:coverage
-open coverage/index.html
-
 # Backend
 cd ../coeus-api && pytest --cov=app --cov-report=html
 open htmlcov/index.html
