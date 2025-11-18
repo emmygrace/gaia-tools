@@ -1,5 +1,7 @@
 packages:
   - 'packages/*'
   - 'apps/*'
-  - 'aphrodite-d3'
+  - '../iris-core'
+  - '../aphrodite-d3'
+  - '../aphrodite-shared'
 

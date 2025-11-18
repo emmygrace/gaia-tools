@@ -48,6 +48,15 @@ else
     echo "  ⚠️  crius-swiss not found at $WORKSPACE_ROOT/crius-swiss"
 fi
 
+if [ -d "$WORKSPACE_ROOT/crius-jpl" ]; then
+    echo "  → Installing crius-jpl..."
+    cd "$WORKSPACE_ROOT/crius-jpl"
+    $PIP_CMD install -e . || echo "  ⚠️  Warning: Failed to install crius-jpl (may need virtualenv)"
+    cd "$SCRIPT_DIR"
+else
+    echo "  ⚠️  crius-jpl not found at $WORKSPACE_ROOT/crius-jpl"
+fi
+
 if [ -d "$WORKSPACE_ROOT/coeus-api" ]; then
     echo "  → Installing coeus-api dependencies..."
     cd "$WORKSPACE_ROOT/coeus-api"

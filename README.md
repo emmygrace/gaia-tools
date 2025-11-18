@@ -8,11 +8,13 @@ The workspace is organized as a monorepo with the following structure:
 
 ```
 gaia-tools/
-├── coeus-api-client/          # @gaia-tools/coeus-api-client - TypeScript API client SDK
-├── coeus-api/                  # Backend API (FastAPI/Python)
-├── aphrodite-d3/               # @gaia-tools/aphrodite-d3 - D3-based chart renderer
+├── iris-core/                 # @gaia-tools/iris-core - Framework-agnostic client bundle
+├── aphrodite-d3/              # @gaia-tools/aphrodite-d3 - D3-based chart renderer
+├── aphrodite-shared/          # @gaia-tools/aphrodite-shared - Shared wheel definitions and configs
+├── coeus-api/                 # Backend API (FastAPI/Python)
 ├── crius-ephemeris-core/      # crius-ephemeris-core - Python ephemeris types and interfaces
 ├── crius-swiss/               # crius-swiss - Swiss Ephemeris adapter (AGPL)
+├── crius-jpl/                 # crius-jpl - JPL Ephemeris adapter (MIT)
 └── gaia-tools/                # Workspace configuration and scripts
     ├── package.json           # Root workspace package.json
     ├── pnpm-workspace.yaml    # pnpm workspace configuration
@@ -22,18 +24,16 @@ gaia-tools/
 
 ## Packages
 
-### Published Packages
+### TypeScript/JavaScript Packages
 
-#### `@gaia-tools/coeus-api-client`
+#### `@gaia-tools/iris-core`
 
-TypeScript client SDK for the Gaia astrological charting backend API.
+Lightweight, framework-agnostic client bundle for Gaia astrological charting. Combines API client, chart rendering, and client-side processing utilities.
 
-- **Repository**: [coeus-api-client](https://github.com/emmygrace/coeus-api-client)
-- **Documentation**: See [coeus-api-client/README.md](../coeus-api-client/README.md)
-- **Published to**: npm
+- **Location**: `../iris-core/`
+- **Documentation**: See [iris-core/README.md](../iris-core/README.md)
+- **Published to**: npm (when published)
 - **Version**: 0.1.0
-
-### Local Development Packages
 
 #### `@gaia-tools/aphrodite-d3`
 
@@ -41,6 +41,17 @@ D3-based TypeScript + SVG library for rendering astrological charts.
 
 - **Location**: `../aphrodite-d3/`
 - **Documentation**: See [aphrodite-d3/README.md](../aphrodite-d3/README.md)
+- **Published to**: npm (when published)
+- **Version**: 0.1.0
+
+#### `@gaia-tools/aphrodite-shared`
+
+Platform-agnostic wheel definitions, visual/glyph configurations, and chart presets for the Aphrodite chart rendering system.
+
+- **Location**: `../aphrodite-shared/`
+- **Documentation**: See [aphrodite-shared/README.md](../aphrodite-shared/README.md)
+- **Published to**: npm (when published)
+- **Version**: 0.1.0
 
 ### Python Packages
 
@@ -64,6 +75,17 @@ Swiss Ephemeris adapter implementation that conforms to the `crius-ephemeris-cor
 - **Published to**: PyPI (when published)
 - **Version**: 0.1.0
 - **Note**: Requires Swiss Ephemeris data files (`.se1` files) - see [Swiss Ephemeris licensing](https://www.astro.com/swisseph/swephinfo_e.htm)
+
+#### `crius-jpl`
+
+JPL Ephemeris adapter implementation that conforms to the `crius-ephemeris-core` protocol. Uses NASA JPL's DE430t ephemeris data via the `skyfield` library.
+
+- **Location**: `../crius-jpl/`
+- **Documentation**: See [crius-jpl/README.md](../crius-jpl/README.md)
+- **License**: MIT (JPL ephemeris data is public domain)
+- **Published to**: PyPI (when published)
+- **Version**: 0.1.0
+- **Note**: Automatically downloads DE430t ephemeris file (~16MB) on first use
 
 ## Applications
 
@@ -102,6 +124,7 @@ pnpm install
 # Install Python packages in editable mode (for development)
 cd ../crius-ephemeris-core && pip install -e . && cd -
 cd ../crius-swiss && pip install -e . && cd -
+cd ../crius-jpl && pip install -e . && cd -
 cd ../coeus-api && pip install -r requirements.txt && pip install -e . && cd -
 ```
 
@@ -118,7 +141,7 @@ This workflow runs Docker services (postgres + backend) in containers while runn
 
 This will:
 - Start PostgreSQL and backend API in Docker
-- Start all TypeScript packages (`aphrodite-d3`, `coeus-api-client`) in watch mode
+- Start all TypeScript packages (`iris-core`, `aphrodite-d3`, `aphrodite-shared`) in watch mode
 
 **Alternative - Docker Only:**
 
@@ -152,10 +175,15 @@ pnpm test
 
 **npm Packages:**
 
-When `@gaia-tools/coeus-api-client` is published to npm, you can use it in your projects:
+When packages are published to npm, you can use them in your projects:
 
 ```bash
-pnpm add @gaia-tools/coeus-api-client axios
+# Install the main client bundle
+pnpm add @gaia-tools/iris-core @gaia-tools/aphrodite-d3 @gaia-tools/aphrodite-shared axios d3
+
+# Or install individual packages as needed
+pnpm add @gaia-tools/aphrodite-d3
+pnpm add @gaia-tools/aphrodite-shared
 ```
 
 **PyPI Packages:**
@@ -168,6 +196,9 @@ pip install crius-ephemeris-core
 
 # Install crius-swiss (AGPL licensed, requires Swiss Ephemeris data files)
 pip install crius-swiss
+
+# Install crius-jpl (MIT licensed, uses JPL ephemeris)
+pip install crius-jpl
 ```
 
 #### Local Development
@@ -177,7 +208,9 @@ For local development, packages are linked using `file:` protocol in `package.js
 ```json
 {
   "dependencies": {
-    "@gaia-tools/coeus-api-client": "file:../coeus-api-client"
+    "@gaia-tools/iris-core": "file:../iris-core",
+    "@gaia-tools/aphrodite-d3": "file:../aphrodite-d3",
+    "@gaia-tools/aphrodite-shared": "file:../aphrodite-shared"
   }
 }
 ```
@@ -189,19 +222,27 @@ This allows you to:
 
 ## Package Publishing
 
-### Publishing `@gaia-tools/coeus-api-client`
+### Publishing TypeScript Packages
 
-See the [coeus-api-client/PUBLISH_CHECKLIST.md](../coeus-api-client/PUBLISH_CHECKLIST.md) for detailed publishing instructions.
+For publishing TypeScript packages (`iris-core`, `aphrodite-d3`, `aphrodite-shared`):
 
-Quick steps:
-
-1. Navigate to the package: `cd ../coeus-api-client`
-2. Update version in `package.json` and `CHANGELOG.md`
+1. Navigate to the package: `cd ../iris-core` (or `aphrodite-d3`, `aphrodite-shared`)
+2. Update version in `package.json` and `CHANGELOG.md` (if present)
 3. Run `pnpm build` to build the package
 4. Run `pnpm pack` to verify package contents
 5. Run `npm publish` (or `pnpm publish`)
 
 The `prepublishOnly` script will automatically run lint, test, and build before publishing.
+
+### Publishing Python Packages
+
+For publishing Python packages (`crius-ephemeris-core`, `crius-swiss`, `crius-jpl`):
+
+1. Navigate to the package: `cd ../crius-ephemeris-core` (or `crius-swiss`, `crius-jpl`)
+2. Update version in `pyproject.toml` or `setup.py`
+3. Build the package: `python -m build`
+4. Test the build: `pip install dist/crius-*.whl`
+5. Publish: `twine upload dist/*`
 
 ## Workspace Configuration
 
@@ -213,7 +254,9 @@ The workspace uses pnpm workspaces defined in `pnpm-workspace.yaml`:
 packages:
   - 'packages/*'
   - 'apps/*'
-  - 'aphrodite'
+  - '../iris-core'
+  - '../aphrodite-d3'
+  - '../aphrodite-shared'
 ```
 
 Note: The actual package locations may differ from the workspace patterns. Check individual `package.json` files for actual `file:` paths.
@@ -313,8 +356,9 @@ Available workspace scripts (run from `gaia-tools/` directory):
 - [TESTING.md](./TESTING.md) - Testing guide
 
 ### TypeScript/JavaScript Packages
-- [coeus-api-client/README.md](../coeus-api-client/README.md) - API client documentation
+- [iris-core/README.md](../iris-core/README.md) - Framework-agnostic client bundle documentation
 - [aphrodite-d3/README.md](../aphrodite-d3/README.md) - D3-based chart renderer documentation
+- [aphrodite-shared/README.md](../aphrodite-shared/README.md) - Shared wheel definitions and configs documentation
 
 ### Applications
 - [coeus-api/README.md](../coeus-api/README.md) - Backend API documentation
@@ -322,6 +366,7 @@ Available workspace scripts (run from `gaia-tools/` directory):
 ### Python Packages
 - [crius-ephemeris-core/README.md](../crius-ephemeris-core/README.md) - Ephemeris core types and interfaces
 - [crius-swiss/README.md](../crius-swiss/README.md) - Swiss Ephemeris adapter documentation
+- [crius-jpl/README.md](../crius-jpl/README.md) - JPL Ephemeris adapter documentation
 
 ## License
 

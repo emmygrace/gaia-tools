@@ -18,7 +18,7 @@ cd /home/emmy/git/gaia-tools/gaia-tools
 ```
 
 This will:
-- Install Python packages in editable mode (`crius-ephemeris-core`, `crius-swiss`, `coeus-api`)
+- Install Python packages in editable mode (`crius-ephemeris-core`, `crius-swiss`, `crius-jpl`, `coeus-api`)
 - Install Node.js dependencies via pnpm
 - Verify Docker is available
 
@@ -44,11 +44,13 @@ gaia-tools/
 │   ├── setup-dev.sh        # Initial setup script
 │   ├── dev.sh              # Development runner script
 │   └── docker-compose.yml  # Docker services config
-├── aphrodite-d3/            # TypeScript package (no deps)
-├── coeus-api-client/        # TypeScript package (no deps)
-├── coeus-api/               # Python FastAPI backend (depends on crius-swiss)
+├── iris-core/               # TypeScript package (client bundle)
+├── aphrodite-d3/            # TypeScript package (D3 renderer)
+├── aphrodite-shared/        # TypeScript package (shared configs)
+├── coeus-api/               # Python FastAPI backend (depends on crius-swiss/crius-jpl)
 ├── crius-ephemeris-core/    # Python package (no deps)
-└── crius-swiss/             # Python package (depends on crius-ephemeris-core)
+├── crius-swiss/             # Python package (depends on crius-ephemeris-core)
+└── crius-jpl/               # Python package (depends on crius-ephemeris-core)
 ```
 
 ## How It Works
@@ -81,8 +83,9 @@ The backend runs in Docker with:
 
 ```bash
 # TypeScript packages
+cd ../iris-core && pnpm dev
 cd ../aphrodite-d3 && pnpm dev
-cd ../coeus-api-client && pnpm dev
+cd ../aphrodite-shared && pnpm dev
 
 # Python packages (changes are immediate with editable install)
 cd ../crius-ephemeris-core

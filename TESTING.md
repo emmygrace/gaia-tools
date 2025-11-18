@@ -34,8 +34,10 @@ pnpm test:coverage
 ### Package-Specific Tests
 
 ```bash
-# Test coeus-api-client package
-cd ../coeus-api-client && pnpm test
+# Test TypeScript packages
+cd ../iris-core && pnpm test
+cd ../aphrodite-d3 && pnpm test
+cd ../aphrodite-shared && pnpm test
 
 # Test backend (coeus-api)
 cd ../coeus-api && pytest
@@ -45,21 +47,49 @@ cd ../coeus-api && pytest
 
 ### Packages
 
-#### `@gaia-tools/coeus-api-client`
+#### `@gaia-tools/iris-core`
 
-- **Test Runner**: Vitest
-- **Test Files**: `src/__tests__/**/*.test.ts`
-- **Mocking**: Axios mocked for HTTP requests
-
-**Test Coverage:**
-- Chart API methods
-- Instance API methods
-- Wheel API methods
-- Error handling
+- **Test Runner**: (Tests to be added)
+- **Test Files**: `src/__tests__/**/*.test.ts` (when added)
+- **Test Coverage:**
+  - API client methods
+  - Chart rendering utilities
+  - Data conversion functions
+  - Index building
 
 **Run Tests:**
 ```bash
-cd ../coeus-api-client
+cd ../iris-core
+pnpm test
+```
+
+#### `@gaia-tools/aphrodite-d3`
+
+- **Test Runner**: Jest
+- **Test Files**: `src/**/*.test.ts`
+- **Test Coverage:**
+  - Chart rendering components
+  - D3 integration
+  - Visual configuration
+
+**Run Tests:**
+```bash
+cd ../aphrodite-d3
+pnpm test
+```
+
+#### `@gaia-tools/aphrodite-shared`
+
+- **Test Runner**: (Tests to be added)
+- **Test Files**: `src/**/*.test.ts` (when added)
+- **Test Coverage:**
+  - Wheel definitions
+  - Configuration merging
+  - Preset management
+
+**Run Tests:**
+```bash
+cd ../aphrodite-shared
 pnpm test
 ```
 
