@@ -49,7 +49,7 @@ cd ../coeus-api && pytest
 
 #### `@gaia-tools/iris-core`
 
-- **Test Runner**: (Tests to be added)
+- **Test Runner**: Vitest
 - **Test Files**: `src/__tests__/**/*.test.ts` (when added)
 - **Test Coverage:**
   - API client methods
@@ -65,7 +65,7 @@ pnpm test
 
 #### `@gaia-tools/aphrodite-d3`
 
-- **Test Runner**: Jest
+- **Test Runner**: Vitest (jsdom)
 - **Test Files**: `src/**/*.test.ts`
 - **Test Coverage:**
   - Chart rendering components
@@ -80,7 +80,7 @@ pnpm test
 
 #### `@gaia-tools/aphrodite-shared`
 
-- **Test Runner**: (Tests to be added)
+- **Test Runner**: Vitest
 - **Test Files**: `src/**/*.test.ts` (when added)
 - **Test Coverage:**
   - Wheel definitions
