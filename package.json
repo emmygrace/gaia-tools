@@ -11,10 +11,25 @@
     "test:unit": "pnpm --filter './packages/*' test",
     "test:backend": "cd ../coeus-api && pytest",
     "test:integration": "cd ../coeus-api && pytest tests/integration -m integration",
-    "test:coverage": "pnpm -r test --coverage"
+    "test:coverage": "pnpm -r test --coverage",
+    "version:bump": "./scripts/version-bump.sh",
+    "version:major": "./scripts/version-bump.sh major",
+    "version:minor": "./scripts/version-bump.sh minor",
+    "version:patch": "./scripts/version-bump.sh patch",
+    "changelog": "./scripts/generate-changelog.sh",
+    "publish": "./scripts/publish.sh",
+    "clean": "./scripts/clean.sh"
   },
   "devDependencies": {
-    "typescript": "^5.3.0"
+    "typescript": "^5.3.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^14.0.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.0",
+    "nyc": "^15.1.0"
   }
 }
 

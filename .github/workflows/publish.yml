@@ -1,0 +1,102 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - 'v*'
+      - 'python-v*'
+      - 'npm-v*'
+
+jobs:
+  publish-python:
+    name: Publish Python Packages
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/python-') || startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+      
+      - name: Build and publish crius-ephemeris-core
+        run: |
+          cd ../crius-ephemeris-core
+          python -m build
+          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
+        continue-on-error: true
+      
+      - name: Build and publish crius-swiss
+        run: |
+          cd ../crius-swiss
+          python -m build
+          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
+        continue-on-error: true
+      
+      - name: Build and publish crius-jpl
+        run: |
+          cd ../crius-jpl
+          python -m build
+          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_API_TOKEN }}
+        continue-on-error: true
+
+  publish-npm:
+    name: Publish npm Packages
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/npm-') || startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Install dependencies
+        run: |
+          cd gaia-tools
+          pnpm install --frozen-lockfile
+      
+      - name: Build packages
+        run: |
+          cd gaia-tools
+          pnpm build
+      
+      - name: Publish iris-core
+        run: |
+          cd ../iris-core
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+      
+      - name: Publish aphrodite-d3
+        run: |
+          cd ../aphrodite-d3
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+      
+      - name: Publish aphrodite-shared
+        run: |
+          cd ../aphrodite-shared
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+

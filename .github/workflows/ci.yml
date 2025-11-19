@@ -1,0 +1,133 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test-python:
+    name: Test Python Packages
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt', '**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd ../coeus-api
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt || true
+          pip install -e ../crius-ephemeris-core || true
+          pip install -e ../crius-swiss || true
+      
+      - name: Run linting
+        run: |
+          cd ../coeus-api
+          ruff check . || true
+          black --check . || true
+          mypy app || true
+      
+      - name: Run tests
+        run: |
+          cd ../coeus-api
+          pytest tests/ -v --cov=app --cov-report=xml --cov-report=term
+        env:
+          TEST_JPL_ADAPTER: 0
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ../coeus-api/coverage.xml
+          flags: python
+          name: python-${{ matrix.python-version }}
+
+  test-typescript:
+    name: Test TypeScript Packages
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Cache pnpm store
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      
+      - name: Install dependencies
+        run: |
+          cd gaia-tools
+          pnpm install --frozen-lockfile
+      
+      - name: Run linting
+        run: |
+          cd gaia-tools
+          pnpm lint || true
+      
+      - name: Run type checking
+        run: |
+          cd gaia-tools
+          pnpm -r exec tsc --noEmit || true
+      
+      - name: Run tests
+        run: |
+          cd gaia-tools
+          pnpm test || true
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [test-python, test-typescript]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          cd ../coeus-api
+          pip install -r requirements.txt
+          pip install -e ../crius-ephemeris-core || true
+          pip install -e ../crius-swiss || true
+      
+      - name: Run integration tests
+        run: |
+          cd ../coeus-api
+          pytest tests/integration/ -v -m integration || true
+

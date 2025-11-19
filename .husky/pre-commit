@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run linting
+echo "Running linting..."
+pnpm lint || exit 1
+
+# Run type checking
+echo "Running type checking..."
+pnpm -r exec tsc --noEmit || exit 1
+
+# Run tests
+echo "Running tests..."
+pnpm test || exit 1
+
+echo "Pre-commit checks passed!"
+
