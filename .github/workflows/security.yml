@@ -13,7 +13,7 @@ jobs:
     name: Dependabot Security Alerts
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check for security vulnerabilities
         uses: github/super-linter@v4
         env:
@@ -24,7 +24,7 @@ jobs:
     name: Python Security Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -44,7 +44,7 @@ jobs:
     name: npm Security Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       - name: Set up Node.js
         uses: actions/setup-node@v4
